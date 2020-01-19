@@ -50,7 +50,9 @@ export const pageQuery = graphql`
           slug
           orderIndex
           heroImage {
-            fluid(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
+            fluid(
+              quality: 100
+            ) {
              ...GatsbyContentfulFluid_tracedSVG
             }
           }
@@ -69,10 +71,7 @@ export const pageQuery = graphql`
           title
           heroImage {
             fluid(
-              maxWidth: 1180
-              maxHeight: 480
-              resizingBehavior: PAD
-              background: "rgb:000000"
+              quality: 100
             ) {
               ...GatsbyContentfulFluid_tracedSVG
             }

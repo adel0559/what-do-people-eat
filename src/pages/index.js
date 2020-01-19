@@ -9,21 +9,20 @@ import ArticlePreview from '../components/article-preview'
 class RootIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allContentfulBlogPost.edges')
-    const [author] = get(this, 'props.data.allContentfulPerson.edges')
-
+    const recipes = get(this, 'props.data.allContentfulRecipe.edges')
+    const [landing] = get(this, 'props.data.allContentfulLanding.edges')
     return (
       <Layout location={this.props.location} >
         <div style={{ background: '#fff' }}>
           <Helmet title={siteTitle} />
-          <Hero data={author.node} />
+          <Hero data={landing.node} />
           <div className="wrapper">
-            <h2 className="section-headline">Recent articles</h2>
+            <h2 className="section-headline">Recipes</h2>
             <ul className="article-list">
-              {posts.map(({ node }) => {
+              {recipes.map((node) => {
                 return (
                   <li key={node.slug}>
-                    <ArticlePreview article={node} />
+                    <ArticlePreview recipe={node.node} />
                   </li>
                 )
               })}
@@ -44,35 +43,31 @@ export const pageQuery = graphql`
         title
       }
     }
-    allContentfulBlogPost(sort: { fields: [publishDate], order: DESC }) {
+    allContentfulRecipe(sort: { fields: [orderIndex], order: DESC }) {
       edges {
         node {
           title
           slug
-          publishDate(formatString: "MMMM Do, YYYY")
-          tags
+          orderIndex
           heroImage {
             fluid(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
              ...GatsbyContentfulFluid_tracedSVG
             }
           }
-          description {
-            childMarkdownRemark {
-              html
-            }
+          instructions {
+            instructions
+          }
+          ingredients {
+            list
           }
         }
       }
     }
-    allContentfulPerson(filter: { contentful_id: { eq: "15jwOBqpxqSAOy2eOO4S0m" } }) {
+    allContentfulLanding(filter: { contentful_id: { eq: "1gFRR29V9eu3jCBZILonTq" } }) {
       edges {
         node {
-          name
-          shortBio {
-            shortBio
-          }
           title
-          heroImage: image {
+          heroImage {
             fluid(
               maxWidth: 1180
               maxHeight: 480
